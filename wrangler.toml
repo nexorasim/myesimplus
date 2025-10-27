@@ -1,6 +1,6 @@
 name = "myesimplus-com"
 main = "src/index.js"
-compatibility_date = "2024-01-01"
+compatibility_date = "2024-10-27"
 compatibility_flags = ["nodejs_compat"]
 
 [env.production]
@@ -23,9 +23,3 @@ bucket_name = "myesimplus-assets"
 ENVIRONMENT = "production"
 API_BASE_URL = "https://api.myesimplus.com"
 
-[build]
-command = "npm run build"
-cwd = "."
-
-[site]
-bucket = "./dist"

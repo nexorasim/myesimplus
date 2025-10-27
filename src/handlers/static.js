@@ -104,7 +104,7 @@ function getIndexHTML() {
 }
 
 function getCSS() {
-  return \`* {
+  return `* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -256,11 +256,11 @@ footer {
     nav ul {
         gap: 1rem;
     }
-}\`;
+}`;
 }
 
 function getJS() {
-  return \`document.addEventListener('DOMContentLoaded', function() {
+  return `document.addEventListener('DOMContentLoaded', function() {
     // Smooth scrolling for navigation links
     document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -284,5 +284,5 @@ function getJS() {
     window.addEventListener('load', function() {
         document.body.classList.add('loaded');
     });
-});\`;
+});`;
 }
