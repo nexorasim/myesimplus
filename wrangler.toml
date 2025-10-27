@@ -1,0 +1,31 @@
+name = "myesimplus-com"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[env.production]
+name = "myesimplus-com"
+route = "myesimplus.com/*"
+
+[env.staging]
+name = "myesimplus-com-staging"
+
+[[env.production.kv_namespaces]]
+binding = "CACHE"
+id = "your-kv-namespace-id"
+preview_id = "your-preview-kv-namespace-id"
+
+[[env.production.r2_buckets]]
+binding = "ASSETS"
+bucket_name = "myesimplus-assets"
+
+[vars]
+ENVIRONMENT = "production"
+API_BASE_URL = "https://api.myesimplus.com"
+
+[build]
+command = "npm run build"
+cwd = "."
+
+[site]
+bucket = "./dist"
