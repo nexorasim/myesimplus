@@ -1,0 +1,83 @@
+name: Deploy to Cloudflare Workers
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: myesimplus-com/package-lock.json
+      
+      - name: Install dependencies
+        run: |
+          cd myesimplus-com
+          npm ci
+      
+      - name: Run tests
+        run: |
+          cd myesimplus-com
+          npm run test
+      
+      - name: Lint code
+        run: |
+          cd myesimplus-com
+          npm run lint
+
+  deploy-staging:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: myesimplus-com/package-lock.json
+      
+      - name: Install dependencies
+        run: |
+          cd myesimplus-com
+          npm ci
+      
+      - name: Deploy to staging
+        run: |
+          cd myesimplus-com
+          npm run deploy:staging
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+  deploy-production:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: myesimplus-com/package-lock.json
+      
+      - name: Install dependencies
+        run: |
+          cd myesimplus-com
+          npm ci
+      
+      - name: Deploy to production
+        run: |
+          cd myesimplus-com
+          npm run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
